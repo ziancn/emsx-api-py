@@ -1,4 +1,6 @@
-""""""
+"""
+Wrapper method to create 'GetFills' request for EMSX API History service.
+"""
 
 import blpapi
 import logging
@@ -67,7 +69,6 @@ def request_get_fills(
         # you need to pass the name of system to setElement. `True` is a mechanism
         # that tells server to link to this UUID's current trading system.
         scope.setElement(TRADING_SYSTEM, True)
-
 
     else:
         raise ValueError("Invalid 'scope_choice'.")
