@@ -5,9 +5,13 @@ This module houses the SessionManager class, which controls session lifecycle an
 import blpapi
 import logging
 
-from typing import List, Callable
+from typing import List, Callable, Dict
 
 from .modules.protocol import ModuleProtocol
+
+
+# Typehint
+ResponseHandler = Callable[[blpapi.Message], None]
 
 
 class SessionManager:
@@ -21,7 +25,7 @@ class SessionManager:
         session_options.setServerPort(port)
 
         self._session = blpapi.Session(session_options, self._process_event)
-        self._response_handlers = {}
+        self._response_handlers: Dict[blpapi.CorrelationId, ResponseHandler] = {}
         self._modules: List[ModuleProtocol] = []
 
 
