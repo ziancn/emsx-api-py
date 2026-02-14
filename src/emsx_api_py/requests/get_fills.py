@@ -17,8 +17,8 @@ FILTER_BY         = blpapi.Name("FilterBy")
 BASKET            = blpapi.Name("Basket")
 MULTILEG          = blpapi.Name("Multileg")
 ORDERS_AND_ROUTES = blpapi.Name("OrdersAndRoutes")
-ORDER_ID          = blpapi.Name("OrderID")
-ROUTE_ID          = blpapi.Name("RouteID")
+ORDER_ID          = blpapi.Name("OrderId")
+ROUTE_ID          = blpapi.Name("RouteId")
 
 
 def request_get_fills(
@@ -51,10 +51,6 @@ def request_get_fills(
         if team_name: scope.setElement(TEAM, team_name)
         else: raise ValueError("Missing parameter 'team_name'.")
 
-    elif scope_choice.lower() == "tradingsystem":
-        scope.setChoice(TRADING_SYSTEM)
-        scope.setElement(TRADING_SYSTEM, True)
-
     elif scope_choice.lower() == "uuids":
         scope.setChoice(UUIDS)
         if uuids:
@@ -63,6 +59,15 @@ def request_get_fills(
                 scope.getElement(UUIDS).appendValue(uuid)
         else:
             raise ValueError("Missing parameter 'uuids'.")
+
+    elif scope_choice.lower() == "tradingsystem":
+        # Note: Most of the time you will never use TradingSystem to filter.
+        scope.setChoice(TRADING_SYSTEM)
+        # If you encounter case where you really have different trading systems,
+        # you need to pass the name of system to setElement. `True` is a mechanism
+        # that tells server to link to this UUID's current trading system.
+        scope.setElement(TRADING_SYSTEM, True)
+
 
     else:
         raise ValueError("Invalid 'scope_choice'.")
