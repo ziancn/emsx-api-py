@@ -6,6 +6,8 @@ import blpapi
 
 from typing import List
 
+from .request_service_map import request_service_map
+
 
 # blpapi names
 FROM_DATETIME     = blpapi.Name("FromDateTime")
@@ -37,7 +39,7 @@ def request_get_fills(
         route_id: int | None,
 ) -> blpapi.Request:
 
-    if service.name() not in ("//blp/emsx.history", "//blp/emsx.history.uat"):
+    if service.name() not in request_service_map["GetFills"]:
         raise ValueError(f"Invalid service received. Service name: {service.name()}")
 
     request = service.createRequest("GetFills")
