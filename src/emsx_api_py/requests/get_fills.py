@@ -1,9 +1,8 @@
 """
-Wrapper method to create 'GetFills' request for EMSX API History service.
+Wrapper method to create 'GetFills' request.
 """
 
 import blpapi
-import logging
 
 from typing import List
 
@@ -28,6 +27,7 @@ def request_get_fills(
         start_dt: str,
         end_dt: str,
         scope_choice: str,
+        # Scope/Filter parameters
         team_name: str | None,
         uuids: int | List[int] | None,
         filter_choice: str | None,
@@ -67,7 +67,7 @@ def request_get_fills(
         scope.setChoice(TRADING_SYSTEM)
         # If you encounter case where you really have different trading systems,
         # you need to pass the name of system to setElement. `True` is a mechanism
-        # that tells server to link to this UUID's current trading system.
+        # that tells server to link this UUID's current trading system.
         scope.setElement(TRADING_SYSTEM, True)
 
     else:
@@ -96,6 +96,5 @@ def request_get_fills(
             raise ValueError("Invalid 'filter_choice'.")
 
 
-    logging.info(f"[GetFills Request] Request: {request.toString()}")
     return request
 
