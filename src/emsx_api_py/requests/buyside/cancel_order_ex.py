@@ -4,7 +4,7 @@ Wrapper method to create 'CancelOrderEx' request.
 
 import blpapi
 
-from .request_service_map import request_service_map
+from emsx_api_py.requests.request_service_map import request_service_map
 
 
 # blpapi names
