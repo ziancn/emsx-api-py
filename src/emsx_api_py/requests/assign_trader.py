@@ -8,6 +8,7 @@ from typing import List
 
 from .request_service_map import request_service_map
 
+
 # blpapi names
 EMSX_SEQUENCE             = blpapi.Name("EMSX_SEQUENCE")
 EMSX_ASSIGNEE_TRADER_UUID = blpapi.Name("EMSX_ASSIGNEE_TRADER_UUID")
