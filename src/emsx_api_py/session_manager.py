@@ -78,7 +78,7 @@ class SessionManager:
             try:
                 handler(msg, session)
             except Exception as exc:
-                logging.exception(f"[SessionManager] Response handler error: {exc}")
+                logging.exception(f"[{self.__class__.__name__}] Response handler error: {exc}")
 
 
     # PUBLIC
