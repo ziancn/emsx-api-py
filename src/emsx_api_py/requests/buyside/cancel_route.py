@@ -6,7 +6,7 @@ import blpapi
 
 from typing import Tuple
 
-from emsx_api_py.requests.request_service_map import request_service_map
+from ..request_service_map import request_service_map
 
 
 # blpapi names
