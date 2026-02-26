@@ -14,6 +14,26 @@ from .modules.protocol import ModuleProtocol
 ResponseHandler = Callable[[blpapi.Message, blpapi.Session], None]
 
 
+# Event name
+EVENT_NAME = {
+    blpapi.Event.UNKNOWN:              "UNKNOWN",
+    blpapi.Event.ADMIN:                "ADMIN",
+    blpapi.Event.SESSION_STATUS:       "SESSION_STATUS",
+    blpapi.Event.SUBSCRIPTION_STATUS:  "SUBSCRIPTION_STATUS",
+    blpapi.Event.REQUEST_STATUS:       "REQUEST_STATUS",
+    blpapi.Event.RESPONSE:             "RESPONSE",
+    blpapi.Event.PARTIAL_RESPONSE:     "PARTIAL_RESPONSE",
+    blpapi.Event.SUBSCRIPTION_DATA:    "SUBSCRIPTION_DATA",
+    blpapi.Event.SERVICE_STATUS:       "SERVICE_STATUS",
+    blpapi.Event.TIMEOUT:              "TIMEOUT",
+    blpapi.Event.AUTHORIZATION_STATUS: "AUTHORIZATION_STATUS",
+    blpapi.Event.RESOLUTION_STATUS:    "RESOLUTION_STATUS",
+    blpapi.Event.TOPIC_STATUS:         "TOPIC_STATUS",
+    blpapi.Event.TOKEN_STATUS:         "TOKEN_STATUS",
+    blpapi.Event.REQUEST:              "REQUEST",
+}
+
+
 class SessionManager:
     """
     SessionManager controls and session connection, request/response and event distribution
@@ -31,10 +51,11 @@ class SessionManager:
 
     # PRIVATE
     def _process_event(self, event: blpapi.Event, session: blpapi.Session):
-        logging.info(f"[SessionManager] EVENT received: {event.eventType()}")
+        et = event.eventType()
+        logging.info(f"[self.__class__.__name__] {EVENT_NAME.get(et)} event received")
 
         # 1. Dispatch responses
-        if event.eventType() in (blpapi.Event.RESPONSE, blpapi.Event.PARTIAL_RESPONSE):
+        if et in (blpapi.Event.RESPONSE, blpapi.Event.PARTIAL_RESPONSE):
             self._dispatch_response(event, session)
 
         # 2. Broadcast to all registered modules
@@ -42,7 +63,7 @@ class SessionManager:
             try:
                module.process_event(event, session)
             except Exception as e:
-               logging.exception(f"[SessionManager] Module '{module}' error: {e}")
+               logging.exception(f"[self.__class__.__name__] Module '{module}' error: {e}")
 
 
     def _dispatch_response(self, event: blpapi.Event, session: blpapi.Session):
