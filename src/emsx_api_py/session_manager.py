@@ -11,7 +11,7 @@ from .modules.protocol import ModuleProtocol
 
 
 # Typehint
-ResponseHandler = Callable[[blpapi.Message], None]
+ResponseHandler = Callable[[blpapi.Message, blpapi.Session], None]
 
 
 class SessionManager:
@@ -32,31 +32,30 @@ class SessionManager:
     # PRIVATE
     def _process_event(self, event: blpapi.Event, session: blpapi.Session):
         logging.info(f"[SessionManager] EVENT received: {event.eventType()}")
-        etype = event.eventType()
 
         # 1. Dispatch responses
-        if etype in (blpapi.Event.RESPONSE, blpapi.Event.PARTIAL_RESPONSE):
-            self._dispatch_response(event)
+        if event.eventType() in (blpapi.Event.RESPONSE, blpapi.Event.PARTIAL_RESPONSE):
+            self._dispatch_response(event, session)
 
         # 2. Broadcast to all registered modules
         for module in self._modules:
             try:
-               module.handle_event(etype, event, session, self)
+               module.process_event(event, session)
             except Exception as e:
                logging.exception(f"[SessionManager] Module '{module}' error: {e}")
 
 
-    def _dispatch_response(self, event: blpapi.Event):
-        logging.info(f"[SessionManager] RESPONSE received: {event.eventType()}")
-
+    def _dispatch_response(self, event: blpapi.Event, session: blpapi.Session):
         for msg in event:
             if not msg.correlationIds(): continue
+            
             cid_value = msg.correlationIds()[0].value()
             handler = self._response_handlers.get(cid_value)
+            
             if handler is None: continue
-
+            
             try:
-                handler(msg)
+                handler(msg, session)
             except Exception as exc:
                 logging.exception(f"[SessionManager] Response handler error: {exc}")
 
@@ -89,7 +88,7 @@ class SessionManager:
     def send_request(
            self,
            request: blpapi.Request,
-           handler: Callable[[blpapi.Message], None]
+           handler: ResponseHandler
     ) -> blpapi.CorrelationId:
         cid = blpapi.CorrelationId()
         self._response_handlers[cid.value()] = handler
