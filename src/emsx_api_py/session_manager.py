@@ -45,7 +45,7 @@ class SessionManager:
         session_options.setServerPort(port)
 
         self._session = blpapi.Session(session_options, self._process_event)
-        self._response_handlers: Dict[blpapi.CorrelationId, ResponseHandler] = {}
+        self._response_handlers: Dict[blpapi.CorrelationId, ResponseHandler | None] = {}
         self._modules: List[ModuleProtocol] = []
 
 
@@ -109,7 +109,7 @@ class SessionManager:
     def send_request(
            self,
            request: blpapi.Request,
-           handler: ResponseHandler
+           handler: ResponseHandler | None
     ) -> blpapi.CorrelationId:
         cid = blpapi.CorrelationId()
         self._response_handlers[cid.value()] = handler
