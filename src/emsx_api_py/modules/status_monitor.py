@@ -1,6 +1,6 @@
 """
 This module monitors general status like
-session status, services status, subscription status and subscription heartbeat.
+session status, services status, subscription status.
 """
 
 import blpapi
