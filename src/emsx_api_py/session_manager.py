@@ -52,7 +52,7 @@ class SessionManager:
     # PRIVATE
     def _process_event(self, event: blpapi.Event, session: blpapi.Session):
         et = event.eventType()
-        logging.info(f"[{self.__class__.__name__}] {EVENT_NAME.get(et)} event received")
+        logging.debug(f"[{self.__class__.__name__}] {EVENT_NAME.get(et)} event received")
 
         # 1. Dispatch responses
         if et in (blpapi.Event.RESPONSE, blpapi.Event.PARTIAL_RESPONSE):
