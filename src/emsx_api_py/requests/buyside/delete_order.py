@@ -15,8 +15,8 @@ EMSX_SEQUENCE    = blpapi.Name("EMSX_SEQUENCE")
 
 def delete_order(
         service: blpapi.Service,
-        emsx_request_seq: str | None,
-        emsx_sequences: List[int]
+        emsx_sequences: List[int],
+        emsx_request_seq: str | None = None
 ) -> blpapi.Request:
     """
     """
@@ -26,7 +26,7 @@ def delete_order(
 
     request = service.createRequest("DeleteOrder")
 
-    if emsx_request_seq: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
+    if emsx_request_seq is not None: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
 
     for seq in emsx_sequences:
         request.getElement(EMSX_SEQUENCE).appendValue(seq)

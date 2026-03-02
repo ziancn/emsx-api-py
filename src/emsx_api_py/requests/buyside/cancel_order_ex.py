@@ -26,11 +26,12 @@ def cancel_order_ex(
     request = service.createRequest("CancelOrderEx")
 
     # Filter on trader uuid
-    if trader_uuid: request.set(EMSX_TRADER_UUID, trader_uuid)
-    if emsx_request_seq: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
+    if emsx_sequence is not None: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
+
+    if trader_uuid is not None: request.set(EMSX_TRADER_UUID, trader_uuid)
 
     # Filter on sequence number(s)
-    if emsx_sequence:
+    if emsx_sequence is not None:
         if isinstance(emsx_sequence, int):
             request.getElement(EMSX_SEQUENCE).appendValue(emsx_sequence)
         elif isinstance(emsx_sequence, list):

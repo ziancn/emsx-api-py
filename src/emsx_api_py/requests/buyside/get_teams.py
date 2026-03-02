@@ -6,13 +6,14 @@ import blpapi
 
 from ..request_service_map import request_service_map
 
+
 # blpapi names
 EMSX_REQUEST_SEQ = blpapi.Name("EMSX_REQUEST_SEQ")
 
 
 def get_teams(
         service: blpapi.Service,
-        emsx_request_seq: str | None,
+        emsx_request_seq: str | None = None
 ) -> blpapi.Request:
     """
     """
@@ -22,7 +23,7 @@ def get_teams(
 
     request = service.createRequest("GetTeams")
 
-    if emsx_request_seq: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
+    if emsx_request_seq is not None: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
 
 
     return request

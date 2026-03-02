@@ -19,9 +19,9 @@ EMSX_ROUTE_ID    = blpapi.Name("EMSX_ROUTE_ID")
 
 def cancel_route(
         service: blpapi.Service,
-        emsx_request_seq: int | None,
         trader_uuid: int | None,
-        routes: Tuple[int, int]       # (emsx_sequence, route_id), i.e. (1234567, 1)
+        routes: Tuple[int, int],    # (emsx_sequence, route_id), i.e. (1234567, 1)
+        emsx_request_seq: int | None = None,
 ) -> blpapi.Request:
 
     if service.name() not in request_service_map["CancelRoute"]:
@@ -29,8 +29,9 @@ def cancel_route(
 
     request = service.createRequest("CancelRoute")
 
-    if emsx_request_seq: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
-    if trader_uuid: request.set(EMSX_TRADER_UUID, trader_uuid)
+    if emsx_request_seq is not None: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
+
+    if trader_uuid is not None: request.set(EMSX_TRADER_UUID, trader_uuid)
 
     # Append routes to cancel:
     for emsx_sequence, route_id in routes:

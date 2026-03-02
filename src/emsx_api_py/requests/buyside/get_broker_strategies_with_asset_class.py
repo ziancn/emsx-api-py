@@ -15,9 +15,9 @@ EMSX_BROKER      = blpapi.Name("EMSX_BROKER")
 
 def get_broker_strategies_with_asset_class(
         service: blpapi.Service,
-        emsx_request_seq: str | None,
         emsx_broker: str,
-        asset_class: str  # one of EQTY, OPT, FUT or MULTILEG_OPT
+        asset_class: str,   # one of EQTY, OPT, FUT or MULTILEG_OPT
+        emsx_request_seq: str | None = None
 ) -> blpapi.Request:
     """
     """
@@ -27,7 +27,7 @@ def get_broker_strategies_with_asset_class(
 
     request = service.createRequest("GetBrokerStrategiesWithAssetClass")
 
-    if emsx_request_seq: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
+    if emsx_request_seq is not None: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
 
     # Set broker and asset class
     request.set(EMSX_BROKER, emsx_broker)

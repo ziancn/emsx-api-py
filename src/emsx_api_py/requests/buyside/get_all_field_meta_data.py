@@ -13,7 +13,7 @@ EMSX_REQUEST_SEQ = blpapi.Name("EMSX_REQUEST_SEQ")
 
 def get_all_field_meta_data(
         service: blpapi.Service,
-        emsx_request_seq: str | None
+        emsx_request_seq: str | None = None
 ) -> blpapi.Request:
 
     if service.name() not in request_service_map["GetAllFieldMetaData"]:
@@ -21,7 +21,7 @@ def get_all_field_meta_data(
 
     request = service.createRequest("GetAllFieldMetaData")
 
-    if emsx_request_seq: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
+    if emsx_request_seq is not None: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
 
 
     return request

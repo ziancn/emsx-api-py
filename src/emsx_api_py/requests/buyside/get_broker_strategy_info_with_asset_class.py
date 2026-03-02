@@ -16,10 +16,10 @@ EMSX_STRATEGY    = blpapi.Name("EMSX_STRATEGY")
 
 def get_broker_strategy_info_with_asset_class(
         service: blpapi.Service,
-        emsx_request_seq: str | None,
         emsx_broker: str,
         asset_class: str,
-        strategy: str
+        strategy: str,
+        emsx_request_seq: str | None
 ) -> blpapi.Request:
     """
     """
@@ -29,7 +29,7 @@ def get_broker_strategy_info_with_asset_class(
 
     request = service.createRequest("GetBrokerStrategyInfoWithAssetClass")
 
-    if emsx_request_seq: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
+    if emsx_request_seq is not None: request.set(EMSX_REQUEST_SEQ, emsx_request_seq)
 
     # Set broker and asset class
     request.set(EMSX_BROKER, emsx_broker)
