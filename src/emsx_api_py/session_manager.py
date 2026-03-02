@@ -112,6 +112,6 @@ class SessionManager:
            handler: ResponseHandler | None
     ) -> blpapi.CorrelationId:
         cid = blpapi.CorrelationId()
-        self._response_handlers[cid.value()] = handler
         self._session.sendRequest(request, correlationId=cid)
+        self._response_handlers[cid.value()] = handler
         return cid
