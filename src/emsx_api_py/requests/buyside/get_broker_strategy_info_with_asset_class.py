@@ -19,7 +19,7 @@ def get_broker_strategy_info_with_asset_class(
         emsx_broker: str,
         asset_class: str,
         strategy: str,
-        emsx_request_seq: str | None
+        emsx_request_seq: str | None = None
 ) -> blpapi.Request:
     """
     """
