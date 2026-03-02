@@ -22,6 +22,16 @@ def get_broker_strategy_info_with_asset_class(
         emsx_request_seq: str | None = None
 ) -> blpapi.Request:
     """
+
+    Args:
+        service:
+        emsx_broker:
+        asset_class: one of EQTY, OPT, FUT or MULTILEG_OPT
+        strategy:
+        emsx_request_seq:
+
+    Returns: ``blpapi.Request`` object for 'GetBrokerStrategyInfoWithAssetClass' request.
+
     """
 
     if service.name() not in request_service_map["GetBrokerStrategyInfoWithAssetClass"]:
