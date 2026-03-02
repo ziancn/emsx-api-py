@@ -7,10 +7,10 @@ A lightweight, modular Python client framework for integrating with Bloomberg EM
 
 ## Features
 
-- Wrappers that make API calls simpler
-- Modular design
-- Rewritten examples with more modern Python syntax
-- Restructured documation that fits buyside-request's needs
+- Simpler API calls with wrapper
+- Modular design around session manager
+- Modern Python syntax examples
+- Buyside-request's POV adjust structure
 
 ## Quick start
 
