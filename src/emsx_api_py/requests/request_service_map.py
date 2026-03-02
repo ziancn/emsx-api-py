@@ -14,7 +14,7 @@ request_service_map = {
     # //blp/emsx.history
     "GetFills": EMSX_HISTORY_PROD_AND_UAT,
     # //blp/emsx.brokerspec
-    "BrokerSpec" : EMSX_BROKERSPEC_PROD,
+    "GetBrokerSpecForUuid" : EMSX_BROKERSPEC_PROD,
     # //blp/emapisvc
     # Buy side
     "AssignTrader": EMAPISVC_PROD_AND_BETA,
