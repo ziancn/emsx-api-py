@@ -36,7 +36,7 @@ EVENT_NAME = {
 
 class SessionManager:
     """
-    SessionManager controls and session connection, request/response and event distribution
+    SessionManager controls session connection, request/response handling and event distribution
     to registered modules which you can customize and extend.
     """
     def __init__(self, host: str = "localhost", port: int = 8194):
