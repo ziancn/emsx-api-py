@@ -55,7 +55,7 @@ def modify_order_ex(
         emsx_order_type: str,
         emsx_tif: str = "DAY",
         # Optional parameters
-        **kwargs
+        **kwargs: Unpack[ModifyOrderExOptional]
 ) -> blpapi.Request:
 
     if service.name() not in request_service_map["ModifyOrderEx"]:
