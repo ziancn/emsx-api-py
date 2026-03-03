@@ -8,7 +8,7 @@ to the output of `GetBrokerStrategyInfoWithAssetClass` request.
 import blpapi
 import logging
 
-from dataclasses import dataclass, asdict
+from typing import TypedDict, Unpack, NotRequired
 
 from ..request_service_map import request_service_map
 
@@ -45,31 +45,32 @@ EMSX_STOP_PRICE       = blpapi.Name("EMSX_STOP_PRICE")
 EMSX_TRADER_UUID      = blpapi.Name("EMSX_TRADER_UUID")
 
 
-@dataclass
-class RouteExOptionalParams:
-    emsx_account          : str | None = None        # "TestAccount"
-    emsx_cfd_flag         : bool | None = None       # "0" or "1"
-    emsx_clearing_account : str | None = None        # "ClrAccName"
-    emsx_clearing_firm    : str | None = None        # "FirmName"
-    emsx_exec_instruction : str | None = None        # "AnyInst"
-    emsx_get_warnings     : bool | None = None       # "0" or "1"
-    emsx_gtd_date         : str | None = None        # "yyyymmdd"
-    emsx_limit_price      : float | None = None      # 123.45
-    emsx_locate_broker    : str | None = None        # "CLSA"
-    emsx_locate_id        : int | None = None        # "SomeID"
-    emsx_locate_req       : bool | None = None       # "Y"
-    emsx_notes            : str | None = None        # "Some Notes"
-    emsx_odd_lot          : bool | None = None       # "0" or "1"
-    emsx_p_a              : str | None = None        # "p" or "a"
-    emsx_release_time     : str | None = None        # 1259
-    emsx_request_seq      : int | None = None        # 1001
-    emsx_route_ref_id     : str | None = None        # "UniqueRef"
-    emsx_stop_price       : float | None = None      # 123.45
-    emsx_trader_uuid      : int | None = None        # 1234567
+class RouteExOptional(TypedDict, total=False):
+    emsx_account          : NotRequired[str]        # "TestAccount"
+    emsx_bookname         : NotRequired[str]        # "TestBook"
+    emsx_cfd_flag         : NotRequired[str]        # "0" or "1"
+    emsx_clearing_account : NotRequired[str]        # "ClrAccName"
+    emsx_clearing_firm    : NotRequired[str]        # "FirmName"
+    emsx_exec_instruction : NotRequired[str]        # "AnyInst"
+    emsx_get_warnings     : NotRequired[str]        # "0" or "1"
+    emsx_gtd_date         : NotRequired[str]        # "yyyymmdd"
+    emsx_limit_price      : NotRequired[float]      # 123.45
+    emsx_locate_broker    : NotRequired[str]        # "CLSA"
+    emsx_locate_id        : NotRequired[str]        # "SomeID"
+    emsx_locate_req       : NotRequired[str]        # "Y"
+    emsx_notes            : NotRequired[str]        # "Some Notes"
+    emsx_odd_lot          : NotRequired[str]        # "0" or "1"
+    emsx_p_a              : NotRequired[str]        # "p" or "a"
+    emsx_release_time     : NotRequired[int]        # 34341
+    emsx_request_seq      : NotRequired[int]        # 12345678
+    emsx_route_ref_id     : NotRequired[str]        # "UniqueRef"
+    emsx_stop_price       : NotRequired[float]      # 123.45
+    emsx_trader_uuid      : NotRequired[int]        # 12345678
 
 
 def route_ex_raw(
         service: blpapi.Service,
+        *,
         emsx_sequence: int,
         emsx_amount: int,
         emsx_broker: str,
@@ -78,7 +79,7 @@ def route_ex_raw(
         emsx_hand_instruction: str = "ANY",
         emsx_tif: str = "DAY",
         # Optional parameters
-        optional_params: RouteExOptionalParams = RouteExOptionalParams()
+        **kwargs: Unpack[RouteExOptional],
 ) -> blpapi.Request:
     """
 
@@ -87,16 +88,16 @@ def route_ex_raw(
         emsx_sequence:
         emsx_amount:
         emsx_broker:
-        emsx_order_type:
+        emsx_order_type: 'MKT', 'LMT', 'STP', etc. See EMSX API documentation for details.
         emsx_ticker:
-        emsx_hand_instruction:
+        emsx_hand_instruction: default 'ANY', other values like 'AUTO', 'MAN'
         emsx_tif:
-        optional_params:
+        **kwargs: Optional parameters
 
-    Returns: ``blpapi.Request`` object without strategy input.
+    Returns: ``blpapi.Request`` object for 'RouteEx' request with provided parameters set.
 
     """
-    if service.name not in request_service_map["RouteEx"]:
+    if service.name() not in request_service_map["RouteEx"]:
         raise ValueError(f"Invalid service received. Service name: {service.name()}")
 
     request = service.createRequest("RouteEx")
@@ -117,8 +118,7 @@ def route_ex_raw(
 
 
     # Set optional parameters if provided
-    optional_params = asdict(optional_params)
-    optional_mapping = {
+    emsx_name_map = {
         "emsx_account"          : EMSX_ACCOUNT,
         "emsx_bookname"         : EMSX_BOOKNAME,
         "emsx_cfd_flag"         : EMSX_CFD_FLAG,
@@ -141,15 +141,15 @@ def route_ex_raw(
         "emsx_trader_uuid"      : EMSX_TRADER_UUID,
     }
 
-    for param_name, value in optional_params.items():
+    for param_name, value in kwargs.items():
         if value is None:
             continue
 
-        if optional_mapping.get(param_name) is None:
-            logging.warning(f"Unexpected parameter '{param_name}' provided. No corresponding RouteEx field found. Skipping this parameter.")
+        if emsx_name_map.get(param_name) is None:
+            logging.warning(f"Unexpected parameter '{param_name}' provided. Skipping this parameter.")
             continue
 
-        request.set(optional_mapping[param_name], value)
+        request.set(emsx_name_map[param_name], value)
 
 
     return request
