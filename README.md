@@ -10,7 +10,7 @@ A lightweight, modular Python client framework for integrating with Bloomberg EM
 - Simpler API calls with wrapper
 - Modular design around session manager
 - Modern Python syntax examples
-- Buyside-request's POV adjust structure
+- Buyside-request's POV adjusted structure
 
 ## Quick start
 
@@ -23,10 +23,11 @@ Minimal example:
 
 ```python
 from emsx_api_py import SessionManager
-from emsx_api_py.modules import StatusMonitor
+from emsx_api_py.modules import StatusMonitor, DemoModule
 
 sm = SessionManager()
-sm.register_module(StatusMonitor())
+sm.register_module(StatusMonitor()) # Logs status
+sm.register_module(DemoModule())    # Subscribes and logs heartbeat
 sm.start_async()
 
 try:
@@ -35,3 +36,7 @@ try:
 finally:
     sm.session.stop()
 ```
+
+## Acknowledgement
+
+Examples and API usages developed are largely based on the [tkim/emsx_api_repository](https://github.com/tkim/emsx_api_repository).
