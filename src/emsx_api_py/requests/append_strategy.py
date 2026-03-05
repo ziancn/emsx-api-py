@@ -29,7 +29,9 @@ def append_strategy(
     Args:
         request:
         strategy_name:
-        parameters:
+        parameters: List of tuples where tuples contain
+                    1). strategy parameter value
+                    2). indicator： ``0`` means this field carries value and ``1`` means skip this field
 
     """
     # Todo: check if strategy is valid for this broker
