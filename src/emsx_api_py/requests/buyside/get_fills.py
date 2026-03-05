@@ -24,7 +24,7 @@ ORDER_ID          = blpapi.Name("OrderId")
 ROUTE_ID          = blpapi.Name("RouteId")
 
 
-def request_get_fills(
+def get_fills(
         service: blpapi.Service,
         start_dt: str,
         end_dt: str,
