@@ -29,6 +29,7 @@ EMSX_LIMIT_PRICE      = blpapi.Name("EMSX_LIMIT_PRICE")
 EMSX_NOTES            = blpapi.Name("EMSX_NOTES")
 EMSX_REQUEST_SEQ      = blpapi.Name("EMSX_REQUEST_SEQ")
 EMSX_STOP_PRICE       = blpapi.Name("EMSX_STOP_PRICE")
+EMSX_TRADER_UUID      = blpapi.Name("EMSX_TRADER_UUID")
 
 
 class ModifyOrderExOptional(TypedDict, total=False):
@@ -43,6 +44,7 @@ class ModifyOrderExOptional(TypedDict, total=False):
     emsx_notes                : NotRequired[str]
     emsx_request_seq          : NotRequired[int]
     emsx_stop_price           : NotRequired[float]
+    emsx_trader_uuid          : NotRequired[int]    # If modifying on behalf of another trader, set order owner's UUID
 
 
 
@@ -106,8 +108,5 @@ def modify_order_ex(
     #       by setting the content to -99999
 
     # Note: To clear down the stop price, set the content to -1
-
-    # If modifying on behalf of another trader, set the order owner's UUID
-    # request.set("EMSX_TRADER_UUID", 1234567)
 
     return request
