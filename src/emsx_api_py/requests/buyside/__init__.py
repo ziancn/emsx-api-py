@@ -16,8 +16,8 @@ from .get_fills import get_fills
 from .get_teams import get_teams
 from .get_trade_desks import get_trade_desks
 from .get_traders import get_traders
-# from .group_route_ex import group_route_ex
+from .group_route_ex import group_route_ex
 from .modify_order_ex import modify_order_ex
-# from .modify_route_ex import modify_route_ex
+from .modify_route_ex import modify_route_ex
 from .route_ex_raw import route_ex_raw
 # from .route_manually_ex import route_manually_ex
