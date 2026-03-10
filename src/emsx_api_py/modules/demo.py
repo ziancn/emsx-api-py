@@ -25,6 +25,8 @@ SUBSCRIPTION_FAILURE          = blpapi.Name("SubscriptionFailure")
 SUBSCRIPTION_STARTED          = blpapi.Name("SubscriptionStarted")
 SUBSCRIPTION_TERMINATED       = blpapi.Name("SubscriptionTerminated")
 
+ORDER_ROUTE_FIELDS            = blpapi.Name("OrderRouteFields")
+
 
 class DemoModule(ModuleProtocol):
     """
@@ -57,7 +59,7 @@ class DemoModule(ModuleProtocol):
 
     def process_service_status_event(self, event: blpapi.Event, session: blpapi.Session):
         for msg in event:
-            if msg.messageType() == blpapi.Name("ServiceOpened"):
+            if msg.messageType() == SERVICE_OPENED:
                 self.subscribe_orders(session)
                 self.subscribe_routes(session)
 
@@ -85,19 +87,16 @@ class DemoModule(ModuleProtocol):
     def process_subscription_data_event(self, event: blpapi.Event, session: blpapi.Session):
         for msg in event:
             try:
-                if msg.messageType() != blpapi.Name("OrderRouteFields"): continue
+                if msg.messageType() != ORDER_ROUTE_FIELDS: continue
 
-                event_status = msg.getElementAsInteger("EVENT_STATUS")
-                if event_status == 1:
-                    if msg.correlationIds()[0].value() == self._order_sub_cid.value():
-                        logging.info("O.")
-                    elif msg.correlationIds()[0].value() == self._route_sub_cid.value():
-                        logging.info("R.")
-                elif event_status == 11:
-                    if msg.correlationIds()[0].value() == self._order_sub_cid.value():
-                        logging.info("Order - End of initial paint")
-                    elif msg.correlationIds()[0].value() == self._route_sub_cid.value():
-                        logging.info("Route - End of initial paint")
+                match msg.getElementAsInteger("EVENT_STATUS"):
+                    case 1:
+                        if msg.correlationIds()[0].value() == self._order_sub_cid.value(): logging.info("O.")
+                        elif msg.correlationIds()[0].value() == self._route_sub_cid.value(): logging.info("R.")
+                    case 11:
+                        if msg.correlationIds()[0].value() == self._order_sub_cid.value(): logging.info("Order - End of initial paint")
+                        elif msg.correlationIds()[0].value() == self._route_sub_cid.value(): logging.info("Route - End of initial paint")
+                    case _: ...
 
             except Exception as e:
                 logging.exception(f"[{self.__class__.__name__}] Exception: {e}")
