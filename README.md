@@ -17,7 +17,12 @@ A lightweight, modular Python client framework for integrating with Bloomberg EM
 Prerequisites
 
 - Python 3.12+
-- `blpapi` installed and configured for your environment
+- `blpapi` installed (from [Bloomberg API library](https://www.bloomberg.com/professional/support/api-library/))
+
+Install emsx-api-py
+```shell
+pip install git+https://github.com/ziancn/emsx-api-py.git@main
+```
 
 Minimal example:
 
