@@ -42,6 +42,6 @@ finally:
     sm.session.stop()
 ```
 
-## Acknowledgement
+## Reference
 
 Examples and API usages developed are largely based on the [tkim/emsx_api_repository](https://github.com/tkim/emsx_api_repository).
