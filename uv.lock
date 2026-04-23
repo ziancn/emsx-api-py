@@ -3,15 +3,31 @@ revision = 3
 requires-python = ">=3.12"
 
 [[package]]
+name = "blpapi"
+version = "3.26.3.1"
+source = { registry = "https://blpapi.bloomberg.com/repository/releases/python/simple/" }
+sdist = { url = "https://blpapi.bloomberg.com/repository/releases/python/blpapi-3.26.3.1.tar.gz", hash = "sha256:984cc5986d11d106400280dd42f47c18a0ab34693961f2cc9710542db0fbe58c" }
+wheels = [
+    { url = "https://blpapi.bloomberg.com/repository/releases/python/blpapi-3.26.3.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:c48cdad621dca742ad18409005f0e21fcd018f4219513aba104a1e9b46944be9" },
+    { url = "https://blpapi.bloomberg.com/repository/releases/python/blpapi-3.26.3.1-py3-none-manylinux2014_x86_64.whl", hash = "sha256:79333c2a78584a43627907cc2dda7682032aec9a7a78d23513b8c1b5cbbc07ba" },
+    { url = "https://blpapi.bloomberg.com/repository/releases/python/blpapi-3.26.3.1-py3-none-win32.whl", hash = "sha256:5887c3b36c61f51dc6a3d8b148b0bdd5d23df83a7b9ad14d9842842987509fb3" },
+    { url = "https://blpapi.bloomberg.com/repository/releases/python/blpapi-3.26.3.1-py3-none-win_amd64.whl", hash = "sha256:a5ddfc3f49e990da9b8f78da15f4a278ccacbf328abdc18d4bd2f2b4b608054a" },
+]
+
+[[package]]
 name = "emsx-api-py"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "blpapi" },
     { name = "tzdata" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tzdata", specifier = ">=2025.3" }]
+requires-dist = [
+    { name = "blpapi", index = "https://blpapi.bloomberg.com/repository/releases/python/simple/" },
+    { name = "tzdata", specifier = ">=2025.3" },
+]
 
 [[package]]
 name = "tzdata"
