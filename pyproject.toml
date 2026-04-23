@@ -6,4 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "tzdata>=2025.3",
+    "blpapi",
 ]
+
+[[tool.uv.index]]
+name = "bloomberg"
+url = "https://blpapi.bloomberg.com/repository/releases/python/simple/"
+explicit = true
+
+[tool.uv.sources]
+blpapi = { index = "bloomberg" }
